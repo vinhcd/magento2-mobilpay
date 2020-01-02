@@ -1,0 +1,18 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <payment>
+            <mobilpay_cc>
+                <model>Monogo\Mobilpay\Model\CreditCard</model>
+                <title>Mobilpay Credit</title>
+                <active>0</active>
+                <mode>sandbox</mode>
+                <api_url>https://secure.mobilpay.ro</api_url>
+                <api_url_sandbox>http://sandboxsecure.mobilpay.ro</api_url_sandbox>
+                <order_status>pending_payment</order_status>
+                <debug>0</debug>
+            </mobilpay_cc>
+        </payment>
+    </default>
+</config>

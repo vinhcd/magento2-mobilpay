@@ -1,6 +1,6 @@
 <?php
 
-namespace Monogo\MobilpayCc\Model;
+namespace Monogo\Mobilpay\Model;
 
 class CreditCard extends \Magento\Payment\Model\Method\AbstractMethod
 {

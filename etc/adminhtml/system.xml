@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+        <section id="payment">
+            <group id="mobilpay_cc" translate="label" type="text" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Mobilpay Credit</label>
+
+                <field id="active" translate="label" type="select" sortOrder="1" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Enabled</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+
+                <field id="title" translate="label" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Title</label>
+                </field>
+
+                <field id="signature_id" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Signature ID</label>
+                </field>
+
+                <field id="sandbox_mode" translate="label" sortOrder="30" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Sandbox Mode</label>
+                    <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\Mode</source_model>
+                </field>
+
+                <field id="api_url" translate="label" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API Url</label>
+                </field>
+
+                <field id="api_url_sandbox" translate="label" sortOrder="50" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>API Sandbox Url</label>
+                </field>
+
+                <field id="order_status" translate="label" sortOrder="60" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>New order status</label>
+                    <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\NewOrderStatus</source_model>
+                    <comment>Status when new order is payed/confirmed.</comment>
+                </field>
+
+                <field id="description" translate="label" sortOrder="70" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Shopping Cart Description</label>
+                </field>
+
+                <field id="allowspecific" translate="label" type="allowspecific" sortOrder="80" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment From Applicable Countries</label>
+                    <source_model>Magento\Payment\Model\Config\Source\Allspecificcountries</source_model>
+                </field>
+
+                <field id="specificcountry" translate="label" type="multiselect" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Payment From Specific Countries</label>
+                    <source_model>Magento\Directory\Model\Config\Source\Country</source_model>
+                </field>
+
+                <field id="debug" translate="label" type="select" sortOrder="100" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>Debug</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>
