@@ -5,7 +5,7 @@ namespace Monogo\Mobilpay\Controller\Payment;
 use Magento\Checkout\Model\Session;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\Controller\Result\JsonFactory;
-use Monogo\Mobilpay\Model\CreditAdapter;
+use Monogo\Mobilpay\Model\CreditCardRequestBuilder;
 use Monogo\Mobilpay\Model\Logger;
 
 class PrepareCredit extends \Magento\Framework\App\Action\Action
@@ -26,9 +26,9 @@ class PrepareCredit extends \Magento\Framework\App\Action\Action
     protected $logger;
 
     /**
-     * @var CreditAdapter
+     * @var CreditCardRequestBuilder
      */
-    protected $creditAdapter;
+    protected $cardRequestBuilder;
 
     /**
      * PrepareCredit constructor.
@@ -36,35 +36,36 @@ class PrepareCredit extends \Magento\Framework\App\Action\Action
      * @param JsonFactory $jsonFactory
      * @param Session $checkoutSession
      * @param Logger $logger
-     * @param CreditAdapter $creditAdapter
+     * @param CreditCardRequestBuilder $cardRequestBuilder
      */
     public function __construct(
         Context $context,
         JsonFactory $jsonFactory,
         Session $checkoutSession,
         Logger $logger,
-        CreditAdapter $creditAdapter
+        CreditCardRequestBuilder $cardRequestBuilder
     ) {
         $this->jsonFactory = $jsonFactory;
         $this->checkoutSession = $checkoutSession;
         $this->logger = $logger;
-        $this->creditAdapter = $creditAdapter;
+        $this->cardRequestBuilder = $cardRequestBuilder;
 
         parent::__construct($context);
     }
 
     /**
      * @inheritDoc
+     * @throws \Exception
      */
     public function execute()
     {
         $quote = $this->checkoutSession->getQuote();
         $quote->reserveOrderId();
 
-        $requestObj = $this->creditAdapter->buildRequestObj($quote);
-        $this->logger->debug($requestObj->getXml()->saveXML());
+        $request = $this->cardRequestBuilder->buildRequest($quote);
+        $this->logger->debug($request->getXml()->saveXML());
 
         return $this->jsonFactory->create()
-            ->setData(['data' => $requestObj->getEncData(), 'env_key' => $requestObj->getEnvKey()]);
+            ->setData(['data' => $request->getEncData(), 'env_key' => $request->getEnvKey()]);
     }
 }

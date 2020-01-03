@@ -3,25 +3,19 @@
 namespace Monogo\Mobilpay\Model;
 
 use Magento\Checkout\Model\ConfigProviderInterface;
-use Magento\Payment\Gateway\ConfigInterface;
+use Monogo\Mobilpay\Model\Config\CreditCardConfig;
 
 class CreditCardConfigProvider implements ConfigProviderInterface
 {
-    const CONFIG_SANDBOX = 'sandbox_mode';
-
-    const CONFIG_API_URL = 'api_url';
-
-    const CONFIG_API_URL_SANDBOX = 'api_url_sandbox';
-
     /**
-     * @var ConfigInterface
+     * @var CreditCardConfig
      */
     protected $config;
 
     /**
-     * @param ConfigInterface $config
+     * @param CreditCardConfig $config
      */
-    public function __construct(ConfigInterface $config)
+    public function __construct(CreditCardConfig $config)
     {
         $this->config = $config;
     }
@@ -34,21 +28,10 @@ class CreditCardConfigProvider implements ConfigProviderInterface
         $config = [
             'payment' => [
                 'mobilpay_cc' => [
-                    'apiUrl' => $this->getApiUrl()
+                    'apiUrl' => $this->config->getApiUrl()
                 ]
             ]
         ];
         return $config;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getApiUrl()
-    {
-        if ($this->config->getValue(self::CONFIG_SANDBOX) == \Monogo\Alphabank\Model\Config\Source\Mode::LIVE) {
-            return $this->config->getValue(self::CONFIG_API_URL);
-        }
-        return $this->config->getValue(self::CONFIG_API_URL_SANDBOX);
     }
 }
