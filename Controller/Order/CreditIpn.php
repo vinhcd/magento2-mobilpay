@@ -95,7 +95,7 @@ class CreditIpn extends \Magento\Framework\App\Action\Action implements HttpPost
             $requestObj = Mobilpay_Payment_Request_Abstract::factoryFromEncrypted($request['env_key'], $request['data'], $this->config->getCertificatePath());
             $handler = $this->cardHandlerFactory->create($requestObj);
             if ($handler) {
-                $handler->initialize($requestObj, $this->getQuote())->handle();
+                $handler->initialize($requestObj)->handle();
             }
             $orderId = $this->getQuote()->getReservedOrderId();
         } catch (\Exception $e) {

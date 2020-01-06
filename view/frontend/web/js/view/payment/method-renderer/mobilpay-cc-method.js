@@ -6,9 +6,7 @@ define([
     'mage/template',
     'Magento_Checkout/js/model/error-processor',
     'Magento_Checkout/js/view/payment/default',
-    'Monogo_Mobilpay/js/action/set-payment-method',
-    'Magento_Checkout/js/model/payment/additional-validators',
-    'Magento_Customer/js/customer-data'
+    'Magento_Checkout/js/model/payment/additional-validators'
 ], function (
     _,
     $,
@@ -17,9 +15,7 @@ define([
     mageTemplate,
     errorProcessor,
     Component,
-    setPaymentMethodAction,
     additionalValidators,
-    customerData
 ) {
     'use strict';
 
@@ -51,12 +47,17 @@ define([
                 event.preventDefault();
             }
             if (this.validate() && additionalValidators.validate()) {
+                this.isPlaceOrderActionAllowed(false);
 
-                this.selectPaymentMethod();
-
-                setPaymentMethodAction(this.messageContainer).done(
+                this.getPlaceOrderDeferredObject()
+                    .fail(
+                        function () {
+                            self.isPlaceOrderActionAllowed(true);
+                        }
+                    ).done(
                     function () {
-                        customerData.invalidate(['cart']);
+                        // customerData.invalidate(['cart']);
+                        // self.afterPlaceOrder();
                         storage.get(
                             urlBuilder.build('mobilpay/payment/prepareCredit', {})
                         ).fail(

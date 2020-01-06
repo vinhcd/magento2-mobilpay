@@ -2,6 +2,8 @@
 
 namespace Monogo\Mobilpay\Model;
 
+use Magento\Store\Model\ScopeInterface;
+
 class CreditCard extends \Magento\Payment\Model\Method\AbstractMethod
 {
     const CODE = 'mobilpay_cc';
@@ -14,7 +16,9 @@ class CreditCard extends \Magento\Payment\Model\Method\AbstractMethod
     /**
      * @return string
      */
-    public function getTitle() {
-        return __("Mobilpay Credit Card");
+    public function getTitle()
+    {
+        return $this->_scopeConfig
+            ->getValue('payment/mobilpay_cc/title', ScopeInterface::SCOPE_STORE) ?: 'Mobilpay Credit Card';
     }
 }

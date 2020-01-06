@@ -2,12 +2,12 @@
 
 namespace Monogo\Mobilpay\Model\ResponseHandler;
 
-use Magento\Checkout\Helper\Data;
 use Magento\Customer\Model\Session;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Quote\Model\Quote;
-use Magento\Quote\Model\QuoteManagement;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Sales\Api\Data\OrderInterface;
 use Magento\Sales\Api\OrderRepositoryInterface;
+use Magento\Sales\Model\Order;
 use Magento\Sales\Model\Order\Email\Sender\OrderSender;
 use Monogo\Mobilpay\Model\Config\CreditCardConfig;
 
@@ -40,19 +40,9 @@ abstract class CreditCardResponseHandler
     protected $requestObj;
 
     /**
-     * @var Quote
+     * @var Order
      */
-    protected $quote;
-
-    /**
-     * @var QuoteManagement
-     */
-    protected $quoteManagement;
-
-    /**
-     * @var Data
-     */
-    protected $checkoutHelper;
+    protected $order;
 
     /**
      * @var OrderSender
@@ -77,23 +67,17 @@ abstract class CreditCardResponseHandler
     /**
      * CreditCardResponseHandler constructor.
      * @param CreditCardConfig $config
-     * @param QuoteManagement $quoteManagement
-     * @param Data $checkoutHelper
      * @param OrderSender $orderEmailSender
      * @param OrderRepositoryInterface $orderRepository
      * @param Session $customerSession
      */
     public function __construct(
         CreditCardConfig $config,
-        QuoteManagement $quoteManagement,
-        Data $checkoutHelper,
         OrderSender $orderEmailSender,
         OrderRepositoryInterface $orderRepository,
         Session $customerSession
     ) {
         $this->config = $config;
-        $this->quoteManagement = $quoteManagement;
-        $this->checkoutHelper = $checkoutHelper;
         $this->orderEmailSender = $orderEmailSender;
         $this->orderRepository = $orderRepository;
         $this->customerSession = $customerSession;
@@ -101,16 +85,13 @@ abstract class CreditCardResponseHandler
 
     /**
      * @param Mobilpay_Payment_Request_Abstract $requestObj
-     * @param Quote $quote
      * @return $this
      * @throws \Exception
      */
-    public function initialize($requestObj, $quote)
+    public function initialize($requestObj)
     {
-        $this->quote = $quote;
         $this->requestObj = $requestObj;
-
-        $this->prepareQuote();
+        $this->order = $this->orderRepository->get($this->requestObj->orderId);
 
         return $this;
     }
@@ -137,61 +118,14 @@ abstract class CreditCardResponseHandler
     }
 
     /**
-     * @return $this
+     * @return OrderInterface|Order
+     * @throws NoSuchEntityException
      */
-    protected function prepareQuote()
+    protected function getOrder()
     {
-        if ($this->getCheckoutMethod() == \Magento\Checkout\Model\Type\Onepage::METHOD_GUEST) {
-            $this->prepareGuestQuote();
+        if (!$this->order) {
+            $this->order = $this->orderRepository->get($this->requestObj->orderId);
         }
-        $this->ignoreAddressValidation();
-        $this->quote->collectTotals();
-
-        return $this;
-    }
-
-    /**
-     * @return string
-     */
-    protected function getCheckoutMethod()
-    {
-        if ($this->customerSession->isLoggedIn()) {
-            return \Magento\Checkout\Model\Type\Onepage::METHOD_CUSTOMER;
-        }
-        if (!$this->quote->getCheckoutMethod()) {
-            if ($this->checkoutHelper->isAllowedGuestCheckout($this->quote)) {
-                $this->quote->setCheckoutMethod(\Magento\Checkout\Model\Type\Onepage::METHOD_GUEST);
-            } else {
-                $this->quote->setCheckoutMethod(\Magento\Checkout\Model\Type\Onepage::METHOD_REGISTER);
-            }
-        }
-        return $this->quote->getCheckoutMethod();
-    }
-
-    /**
-     * @return void
-     */
-    protected function ignoreAddressValidation()
-    {
-        $this->quote->getBillingAddress()->setShouldIgnoreValidation(true);
-        if (!$this->quote->getIsVirtual()) {
-            $this->quote->getShippingAddress()->setShouldIgnoreValidation(true);
-            if (!$this->quote->getBillingAddress()->getEmail()) {
-                $this->quote->getBillingAddress()->setSameAsBilling(1);
-            }
-        }
-    }
-
-    /**
-     * @return $this
-     */
-    protected function prepareGuestQuote()
-    {
-        $this->quote->setCustomerId(null)
-            ->setCustomerEmail($this->quote->getBillingAddress()->getEmail())
-            ->setCustomerIsGuest(true)
-            ->setCustomerGroupId(\Magento\Customer\Model\Group::NOT_LOGGED_IN_ID);
-
-        return $this;
+        return $this->order;
     }
 }

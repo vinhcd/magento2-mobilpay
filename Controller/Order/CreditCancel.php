@@ -11,7 +11,7 @@ class CreditCancel extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        //todo: implement cancel
+        // cancel url seems not being used in any scenes
         return $this->_redirect('checkout/cart');
     }
 }

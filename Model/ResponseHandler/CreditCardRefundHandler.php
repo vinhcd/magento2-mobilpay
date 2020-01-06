@@ -1,6 +1,5 @@
 <?php
 
-
 namespace Monogo\Mobilpay\Model\ResponseHandler;
 
 use Magento\Framework\Exception\LocalizedException;
@@ -14,7 +13,7 @@ class CreditCardRefundHandler extends CreditCardResponseHandler
      */
     public function handle()
     {
-        $order = $this->quoteManagement->submit($this->quote);
+        $order = $this->getOrder();
 
         /** @var \Magento\Sales\Model\Order\Payment $payment */
         $payment = $order->getPayment();

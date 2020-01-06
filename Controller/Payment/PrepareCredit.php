@@ -59,10 +59,9 @@ class PrepareCredit extends \Magento\Framework\App\Action\Action
      */
     public function execute()
     {
-        $quote = $this->checkoutSession->getQuote();
-        $quote->reserveOrderId();
+        $order = $this->checkoutSession->getLastRealOrder();
 
-        $request = $this->cardRequestBuilder->buildRequest($quote);
+        $request = $this->cardRequestBuilder->buildRequest($order);
         $this->logger->debug($request->getXml()->saveXML());
 
         return $this->jsonFactory->create()
