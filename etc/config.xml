@@ -17,6 +17,7 @@
                 <order_status_canceled>canceled</order_status_canceled>
                 <order_status_credit>closed</order_status_credit>
                 <debug>0</debug>
+                <sort_order>100</sort_order>
             </mobilpay_cc>
         </payment>
     </default>
