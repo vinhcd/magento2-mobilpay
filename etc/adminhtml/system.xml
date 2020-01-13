@@ -32,37 +32,43 @@
                     <label>API Sandbox Url</label>
                 </field>
 
-                <field id="order_status_confirmed" translate="label" sortOrder="60" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="new_order_status" translate="label" sortOrder="55" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
+                    <label>New Order Status</label>
+                    <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
+                    <comment>Order status when redirecting the user to mobilpay.</comment>
+                </field>
+
+                <field id="order_status_confirmed" translate="label" sortOrder="60" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Payed / Confirmed</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is confirmed.</comment>
                 </field>
 
-                <field id="order_status_confirmed_pending" translate="label" sortOrder="61" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_confirmed_pending" translate="label" sortOrder="61" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Pending verification</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is confirmed pending.</comment>
                 </field>
 
-                <field id="order_status_paid" translate="label" sortOrder="62" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_paid" translate="label" sortOrder="62" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Open</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is paid.</comment>
                 </field>
 
-                <field id="order_status_paid_pending" translate="label" sortOrder="63" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_paid_pending" translate="label" sortOrder="63" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Pending</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is paid pending.</comment>
                 </field>
 
-                <field id="order_status_canceled" translate="label" sortOrder="64" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_canceled" translate="label" sortOrder="64" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Canceled</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is canceled.</comment>
                 </field>
 
-                <field id="order_status_credit" translate="label" sortOrder="65" type="select" showInDefault="1" showInWebsite="0" showInStore="0">
+                <field id="order_status_credit" translate="label" sortOrder="65" type="select" showInDefault="1" showInWebsite="1" showInStore="0">
                     <label>Credited / Refunded</label>
                     <source_model>Monogo\Mobilpay\Model\Config\Source\Credit\OrderStatus</source_model>
                     <comment>Order status when response action is credit.</comment>

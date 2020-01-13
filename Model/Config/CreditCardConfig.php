@@ -19,6 +19,8 @@ class CreditCardConfig extends \Magento\Payment\Gateway\Config\Config
 
     const API_URL_SANDBOX = 'api_url_sandbox';
 
+    const NEW_ORDER_STATUS = 'new_order_status';
+
     const ORDER_STATUS_CONFIRMED = 'order_status_confirmed';
 
     const ORDER_STATUS_CONFIRMED_PENDING = 'order_status_confirmed_pending';
